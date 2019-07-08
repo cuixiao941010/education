@@ -1,0 +1,104 @@
+server:
+  port: 8005
+  servlet:
+    context-path: /education
+
+spring:
+  quartz:
+    job-store-type: jdbc
+    properties:
+      org.quartz.scheduler.instanceName: ClusteredScheduler
+      org.quartz.scheduler.instanceId: AUTO
+      org.quartz.scheduler.rmi.export: false
+      org.quartz.scheduler.rmi.proxy: false
+      org.quartz.scheduler.wrapJobExecutionInUserTransaction: false
+      # 实例化ThreadPool时，使用的线程类为SimpleThreadPool
+      org.quartz.threadPool.class: org.quartz.simpl.SimpleThreadPool
+      # threadCount和threadPriority将以setter的形式注入ThreadPool实例
+      # 并发个数
+      org.quartz.threadPool.threadCount: 10
+      # 优先级
+      org.quartz.threadPool.threadPriority: 5
+      org.quartz.threadPool.threadsInheritContextClassLoaderOfInitializingThread: true
+      org.quartz.jobStore.misfireThreshold: 60000
+      #持久化
+      org.quartz.jobStore.class: org.quartz.impl.jdbcjobstore.JobStoreTX
+      org.quartz.jobStore.tablePrefix: QRTZ_
+      org.quartz.jobStore.isClustered: true
+      org.quartz.jobStore.clusterCheckinInterval: 15000
+      org.quartz.jobStore.dataSource: qzDS
+      org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+      org.quartz.dataSource.qzDS.connectionProvider.class: com.cx.edu.config.DruidConnectionProvider
+      org.quartz.dataSource.qzDS.driver: ${spring.datasource.druid.driver-class-name}
+      org.quartz.dataSource.qzDS.URL: ${spring.datasource.druid.url}
+      org.quartz.dataSource.qzDS.user: ${spring.datasource.druid.username}
+      org.quartz.dataSource.qzDS.password: ${spring.datasource.druid.password}}
+      org.quartz.dataSource.qzDS.maxConnection: 10
+      org.quartz.dataSource.qzDS.validationQuery: select 0
+    jdbc:
+      initialize-schema: never
+  datasource:
+    druid:
+      url: jdbc:mysql://127.0.0.1:3306/education?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+      username: root
+      password: root
+      driver-class-name: com.mysql.jdbc.Driver
+      initialSize: 5
+      minIdle: 5
+      maxActive: 30
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: false
+      maxPoolPreparedStatementPerConnectionSize: -1
+      filters: stat,slf4j,config
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMil=3000
+      useGlobalDataSourceStat: true
+      filter:
+        wall:
+          config:
+            multi-statement-allow: true
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    jedis:
+      pool:
+        max-active: 1000
+        max-idle: 50
+        min-idle: 10
+    database: 1
+  servlet:
+    multipart:
+      max-file-size: 3MB
+  freemarker:
+    cache: false
+    charset: UTF-8
+    check-template-location: true
+    content-type: text/html
+    expose-request-attributes: true
+    expose-session-attributes: false
+    expose-spring-macro-helpers: true
+    request-context-attribute: request
+    suffix: .ftl
+    template-loader-path: classpath:/templates/
+#  resources:
+#    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+#  mvc:
+#    static-path-pattern: /st/*
+
+log:
+  context: education
+  path: ${education.directory}/logs
+
+mybatis:
+  type-handlers-package: com.cx.edu.config
+  mapper-locations: classpath*:mappers/*.xml
+
+education:
+  directory: E:\JavaProject\data\education
+  txtFile: ${education.directory}\txtfile
+  excelFile: ${education.directory}\excelfile

@@ -1,0 +1,45 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cx.edu.university.repository.UniversityMapper">
+
+    <resultMap id="universityListDTO" type="com.cx.edu.university.model.UniversityListDTO">
+        <result property="id" column="id"/>
+        <result property="planNumber" column="plan_number"/>
+        <result property="lowScore" column="low_score"/>
+        <result property="submitNumber" column="submit_number"/>
+        <result property="signNumber" column="sign_number"/>
+        <result property="education" column="education"/>
+        <result property="artsSciences" column="arts_sciences"/>
+        <result property="examAt" column="exam_at"/>
+        <result property="schoolNo" column="school_no"/>
+        <result property="schoolName" column="school_name"/>
+    </resultMap>
+    <select id="getUniversityList" resultMap="universityListDTO">
+        SELECT u.id, u.plan_number, u.low_score, u.submit_number, u.sign_number, u.education, u.arts_sciences, u.exam_at, s.school_no, s.school_name
+        FROM t_university u
+        LEFT JOIN t_school_base s ON u.base_id = s.id
+        WHERE 1=1
+        <if test="education != null ">
+            AND u.education = #{education}
+        </if>
+        <if test="artsSciences != null ">
+            AND u.arts_sciences = #{artsSciences}
+        </if>
+        <if test="examAt != null and examAt != '' ">
+            AND YEAR(u.exam_at) = #{examAt}
+        </if>
+        <if test="minScore != null and minScore != 0 ">
+            AND u.low_score >= #{minScore}
+        </if>
+        <if test="maxScore != null and maxScore != 0 ">
+            AND u.low_score &lt;= #{maxScore}
+        </if>
+        <if test="schoolName != null and schoolName != '' ">
+            AND u.school_name LIKE CONCAT('%',#{schoolName},'%')
+        </if>
+
+    </select>
+
+</mapper>
