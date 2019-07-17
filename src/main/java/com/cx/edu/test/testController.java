@@ -1,8 +1,10 @@
 package com.cx.edu.test;
 
+import com.cx.edu.base.model.PageDTO;
 import com.cx.edu.exception.ResponseData;
 import com.cx.edu.file.service.FileService;
 import com.cx.edu.redis.service.RedisService;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -130,6 +130,72 @@ public class testController {
         Path path = fileService.createFile(fileName);
         fileService.write(data, fileName);
         return new ResponseData();
+    }
+
+
+    @GetMapping("test")
+    public PageDTO test() {
+        List<Map> dataList = new ArrayList<>();
+        for (int i = 1; i < 5; i++) {
+            Map<String, String> map = new HashMap();
+            map.put("oid",String.valueOf(i));
+            map.put("lawmainno",String.valueOf(i+1));
+            map.put("lawmainname","主体"+String.valueOf(i));
+            map.put("ninenum","9x职权");
+            map.put("phone","13131011111");
+            map.put("headman","负责人"+String.valueOf(i));
+            map.put("address","办公地址"+String.valueOf(i));
+            dataList.add(map);
+        }
+        return new PageDTO(new PageInfo(dataList), dataList);
+    }
+
+    @GetMapping("test1/{oid}")
+    public Map test1(@PathVariable("oid") String oid) {
+        System.out.println("============"+oid);
+        Map<String, String> map = new HashMap<>();
+        map.put("lawmainno","NO");
+        map.put("lawmainname","NAME");
+        map.put("tier","1001");
+        map.put("makearea","1001");
+        map.put("character","1001");
+        map.put("iscg","1");
+        map.put("lawtype","1001");
+        map.put("sjid","1001");
+        map.put("issj","1");
+        map.put("issystem","1");
+        map.put("lawpersonlnum","1001");
+        map.put("headman","1001");
+        map.put("phone","7171");
+        map.put("address","717");
+        map.put("linkman","1001");
+        map.put("runcon","1");
+        map.put("ninenum","1001");
+        return map;
+    }
+
+    @PostMapping("test2/{oid}")
+    public String test3(@PathVariable("oid") String oid, @RequestBody Map map) {
+        System.out.println(oid);
+        System.out.println(map);
+        return "true";
+    }
+
+    @GetMapping("xzfyListtest")
+    public PageDTO xzfyList() {
+        List<Map> dataList = new ArrayList<>();
+        for (int i = 1; i < 6; i++) {
+            Map<String, String> map = new HashMap();
+            map.put("oid",String.valueOf(i));
+            map.put("applytime",String.valueOf(i+1));
+            map.put("applyname","主体"+String.valueOf(i));
+            map.put("depname","9x职权");
+            map.put("transtemplate","13131011111");
+            map.put("field","负责人"+String.valueOf(i));
+            map.put("caseresult","办公地址"+String.valueOf(i));
+            dataList.add(map);
+        }
+        return new PageDTO(new PageInfo(dataList), dataList);
     }
 
 

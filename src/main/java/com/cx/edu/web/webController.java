@@ -23,4 +23,9 @@ public class webController {
     public String login2() {
         return "login2";
     }
+
+    @RequestMapping("aes3")
+    public String aeaes3s2() {
+        return "aes3";
+    }
 }
