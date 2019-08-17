@@ -2,6 +2,7 @@ package com.cx.edu.user.service.impl;
 
 import com.cx.edu.base.service.impl.BaseServiceImpl;
 import com.cx.edu.entity.user.User;
+import com.cx.edu.entity.user.enums.RoleEnum;
 import com.cx.edu.exception.BusinessException;
 import com.cx.edu.exception.ResultEnum;
 import com.cx.edu.jwt.JwtToken;
@@ -9,6 +10,7 @@ import com.cx.edu.jwt.UserContext;
 import com.cx.edu.redis.service.RedisService;
 import com.cx.edu.user.model.LoginCondition;
 import com.cx.edu.user.model.LoginDTO;
+import com.cx.edu.user.model.RegisterCondition;
 import com.cx.edu.user.repository.UserMapper;
 import com.cx.edu.user.service.UserService;
 import com.cx.edu.util.Digests;
@@ -17,6 +19,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
+
+import java.util.UUID;
+
+import static com.cx.edu.util.Digests.HASH_INTERATIONS;
 
 @Service
 @Slf4j
@@ -42,7 +48,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
 		if (userSearch == null) {
 			throw new BusinessException(ResultEnum.USER_IS_NOT_EXIT);
 		}
-		byte[] hashPassword = Digests.md5(loginCondition.getPassword().getBytes(), userSearch.getSalt().getBytes(), Digests.HASH_INTERATIONS);
+		byte[] hashPassword = Digests.md5(loginCondition.getPassword().getBytes(), userSearch.getSalt().getBytes(), HASH_INTERATIONS);
 		String hashPsw = Encodes.encodeHex(hashPassword);
 		if (!hashPsw.equals(userSearch.getPassWord())) {
 			throw new BusinessException(ResultEnum.USERNAME_OR_PASSWORD_ERROR);
@@ -61,6 +67,29 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
 			return;
 		}
 		redisService.deleteValue(String.valueOf(userId));
+	}
+
+	@Override
+	public void register(RegisterCondition registerCondition) {
+		User user = new User();
+		user.setUserName(registerCondition.getUserName());
+		User userSearch = userMapper.selectOne(user);
+		if (userSearch != null) {
+			throw new BusinessException(ResultEnum.USERNAME_IS_EXISTED);
+		}
+		String salt = UUID.randomUUID().toString().replace("-","");
+		byte[] saltByte = salt.getBytes();
+		byte[] hashPassword = Digests.md5(registerCondition.getPassword().getBytes(), saltByte, HASH_INTERATIONS);
+		String encryPassword = Encodes.encodeHex(hashPassword);
+		User userToInsert = new User();
+		userToInsert.setUserName(registerCondition.getUserName());
+		userToInsert.setPassWord(encryPassword);
+		userToInsert.setSalt(salt);
+		//TODO 默认新增普通类型用户，后期可加权限控制
+		userToInsert.setRole(RoleEnum.Simple);
+		userToInsert.setEmail(registerCondition.getEmail());
+		userToInsert.setMobile(registerCondition.getMobile());
+		userMapper.insertSelective(userToInsert);
 	}
 
 }

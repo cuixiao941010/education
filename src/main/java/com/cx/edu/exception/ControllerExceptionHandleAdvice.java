@@ -25,7 +25,7 @@ public class ControllerExceptionHandleAdvice {
         BindingResult bindingResult = e.getBindingResult();
         String message = bindingResult.getFieldError().getDefaultMessage();
         log.warn(message);
-        return ResponseEntity.badRequest().body(new ResponseData("70000", message));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseData("70000", message));
     }
 
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)

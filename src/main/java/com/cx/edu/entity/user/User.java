@@ -26,4 +26,10 @@ public class User extends BaseEntity {
 	@Column(name = "role")
 	private RoleEnum role;
 
+	@Column(name = "email")
+	private String email;
+
+	@Column(name = "mobile")
+	private String mobile;
+
 }

@@ -15,7 +15,8 @@ public enum ResultEnum {
     AUTHORIZATION_IS_NOTE_EXIST("401", "token不存在，请重新登录"),
 
     USER_IS_NOT_EXIT("10001", "用户不存在"),
-    USERNAME_OR_PASSWORD_ERROR("10001", "用户名或密码错误");
+    USERNAME_OR_PASSWORD_ERROR("10001", "用户名或密码错误"),
+    USERNAME_IS_EXISTED("10002", "用户名已存在");
 
 
     private String code;

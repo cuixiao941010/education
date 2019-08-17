@@ -198,5 +198,54 @@ public class testController {
         return new PageDTO(new PageInfo(dataList), dataList);
     }
 
+    @GetMapping("xzysListtest")
+    public PageDTO xzysList() {
+        List<Map> dataList = new ArrayList<>();
+        for (int i = 1; i < 6; i++) {
+            Map<String, String> map = new HashMap();
+            map.put("oid",String.valueOf(i));
+            map.put("filingtime",String.valueOf(i+1));
+            map.put("courtname","主体"+String.valueOf(i));
+            map.put("plantiffname","9x职权");
+            map.put("transtemplate","13131011111");
+            map.put("field","负责人"+String.valueOf(i));
+            map.put("secondresult","办公地址"+String.valueOf(i));
+            dataList.add(map);
+        }
+        return new PageDTO(new PageInfo(dataList), dataList);
+    }
+
+    @GetMapping("gongneng")
+    public Map<String, Object> gongneng() {
+        List<Map> dataList = new ArrayList<>();
+        for (int i = 1; i < 6; i++) {
+            Map<String, String> map = new HashMap();
+            map.put("oid",String.valueOf(i));
+            map.put("projecttype",String.valueOf(i+1));
+            map.put("projectno","主体"+String.valueOf(i));
+            map.put("projectname","9x职权");
+            map.put("systemname","13131011111");
+            map.put("productcompany","负责人"+String.valueOf(i));
+            map.put("client","办公地址"+String.valueOf(i));
+            dataList.add(map);
+        }
+        Map<String, Object> result=  new HashMap<>();
+        result.put("count","6");
+        result.put("data",dataList);
+        result.put("code","0");
+        result.put("msg","");
+        return result;
+//        return new PageDTO(new PageInfo(dataList), dataList);
+    }
+
+    @GetMapping("testss")
+    public ValidationResult tesst() {
+        test test = new test();
+        test.setColname("sadasddsfsdfdsfsdfsdfsdfdsfdsfadsfasdfasdasfsadasd");
+        ValidationUtils validationUtils = new ValidationUtils();
+        ValidationResult result1 = validationUtils.validateEntity(test);
+        return result1;
+    }
+
 
 }

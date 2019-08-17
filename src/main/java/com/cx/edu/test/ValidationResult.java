@@ -11,4 +11,6 @@ public class ValidationResult {
 
     private Map<String, String> errorMsg;
 
+    private String firstErrorMsg;
+
 }

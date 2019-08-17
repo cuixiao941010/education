@@ -37,7 +37,7 @@ public class JwtFilter extends GenericFilterBean {
         response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with,token,content-type");
         response.addHeader("Access-Control-Max-Age", "1800");
-        if (url.contains("login") || url.contains("test")) {
+        if (url.contains("login") || url.contains("test") || url.contains("register")) {
             chain.doFilter(req, res);
             return;
         }

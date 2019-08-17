@@ -28,4 +28,12 @@ public class webController {
     public String aeaes3s2() {
         return "aes3";
     }
+
+    @RequestMapping("login3")
+    public String login3() {
+        return "login3";
+    }
+
+    @RequestMapping("register")
+    public String register() {return  "register";}
 }

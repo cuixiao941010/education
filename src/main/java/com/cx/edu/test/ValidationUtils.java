@@ -1,5 +1,7 @@
 package com.cx.edu.test;
 
+import com.mysql.jdbc.StringUtils;
+
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -14,7 +16,7 @@ import java.util.Set;
  */
 public class ValidationUtils {
 
-    private static Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     /**
      * 验证实体
@@ -22,16 +24,21 @@ public class ValidationUtils {
      * @param <T>
      * @return
      */
-    public static <T> ValidationResult validateEntity(T obj) {
+    public <T> ValidationResult validateEntity(T obj) {
         ValidationResult result = new ValidationResult();
         Set<ConstraintViolation<T>> set = validator.validate(obj, Default.class);
         if (set != null && set.size() != 0) {
             result.setHasErrors(true);
-            Map<String, String> errorMsg = new HashMap<>();
+            Map<String, String> errorMsg = new HashMap<String, String>();
             for (ConstraintViolation<T> cv : set) {
                 errorMsg.put(cv.getPropertyPath().toString(), cv.getMessage());
+                if (StringUtils.isNullOrEmpty(result.getFirstErrorMsg())) {
+                    result.setFirstErrorMsg(cv.getMessage());
+                }
             }
             result.setErrorMsg(errorMsg);
+        }else {
+            result.setHasErrors(false);
         }
         return result;
     }
@@ -43,7 +50,7 @@ public class ValidationUtils {
      * @param <T>
      * @return
      */
-    public static <T> ValidationResult validateProperty(T obj, String propertyName) {
+    public <T> ValidationResult validateProperty(T obj, String propertyName) {
         ValidationResult result = new ValidationResult();
         Set<ConstraintViolation<T>> set = validator.validateProperty(obj, propertyName, Default.class);
         if (set != null && set.size() != 0) {
