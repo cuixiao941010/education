@@ -18,11 +18,11 @@ public class JwtToken {
     public static final String TOKEN = "education-token";
 
     public static void main(String[] args) throws Exception {
-        String createToken = createToken(1L, RoleEnum.Simple);
+        String createToken = createToken(1L, RoleEnum.Simple,"");
         System.out.println(createToken);
     }
 
-    public static String createToken(Long userId, RoleEnum roleEnum) {
+    public static String createToken(Long userId, RoleEnum roleEnum, String userName) {
         Date cur = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, 100);
@@ -31,7 +31,7 @@ public class JwtToken {
         map.put("alg", "HS256");
         map.put("typ", "JWT");
         return JWT.create().withHeader(map).withExpiresAt(expireDate).withIssuedAt(cur).withClaim("userId", userId)
-                .withClaim("role", roleEnum.value()).sign(Algorithm.HMAC256(SECRET));
+                .withClaim("role", roleEnum.value()).withClaim("userName", userName).sign(Algorithm.HMAC256(SECRET));
     }
 
     /**

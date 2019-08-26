@@ -29,6 +29,7 @@ public class UserContext implements AutoCloseable {
 
         private Long id;
         private RoleEnum role;
+        private String userName;
 
     }
 }

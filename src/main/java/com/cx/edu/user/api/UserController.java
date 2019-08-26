@@ -1,6 +1,7 @@
 package com.cx.edu.user.api;
 
 import com.cx.edu.base.model.PageDTO;
+import com.cx.edu.config.MyLog;
 import com.cx.edu.user.model.LoginCondition;
 import com.cx.edu.user.model.LoginDTO;
 import com.cx.edu.user.model.RegisterCondition;
@@ -22,6 +23,7 @@ public class UserController {
 	private UserService userService;
 
 
+	@MyLog(value = "登录")
 	@PostMapping("login")
 	public LoginDTO login(@RequestBody @Valid LoginCondition loginCondition) {
 		return userService.login(loginCondition);

@@ -56,8 +56,8 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
 		if (!hashPsw.equals(userSearch.getPassWord())) {
 			throw new BusinessException(ResultEnum.USERNAME_OR_PASSWORD_ERROR);
 		}
-		String token = JwtToken.createToken(userSearch.getId(), userSearch.getRole());
-		UserContext.AuthorizedUser authorizedUser = new UserContext.AuthorizedUser(userSearch.getId(), userSearch.getRole());
+		String token = JwtToken.createToken(userSearch.getId(), userSearch.getRole(), userSearch.getUserName());
+		UserContext.AuthorizedUser authorizedUser = new UserContext.AuthorizedUser(userSearch.getId(), userSearch.getRole(), userSearch.getUserName());
 		new UserContext(authorizedUser);
 		redisService.setValue(String.valueOf(userSearch.getId()), token);
 		return new LoginDTO(userSearch.getId(), userSearch.getRole(), token);
