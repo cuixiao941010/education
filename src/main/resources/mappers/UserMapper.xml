@@ -1,0 +1,25 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cx.edu.user.repository.UserMapper">
+
+    <resultMap id="usersDTO" type="com.cx.edu.user.model.UsersDTO">
+        <result property="id" column="id"/>
+        <result property="role" column="role"/>
+        <result property="userName" column="user_name"/>
+        <result property="email" column="email"/>
+        <result property="mobile" column="mobile"/>
+    </resultMap>
+    <select id="getUsers" resultMap="usersDTO">
+        SELECT id, user_name, role, email, mobile
+        FROM t_user
+        WHERE
+        id = #{id}
+        <if test="role != null ">
+            OR role = #{role}
+        </if>
+
+    </select>
+
+</mapper>

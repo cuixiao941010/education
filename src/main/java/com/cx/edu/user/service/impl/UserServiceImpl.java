@@ -11,15 +11,18 @@ import com.cx.edu.redis.service.RedisService;
 import com.cx.edu.user.model.LoginCondition;
 import com.cx.edu.user.model.LoginDTO;
 import com.cx.edu.user.model.RegisterCondition;
+import com.cx.edu.user.model.UsersDTO;
 import com.cx.edu.user.repository.UserMapper;
 import com.cx.edu.user.service.UserService;
 import com.cx.edu.util.Digests;
 import com.cx.edu.util.Encodes;
+import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
+import java.util.List;
 import java.util.UUID;
 
 import static com.cx.edu.util.Digests.HASH_INTERATIONS;
@@ -90,6 +93,34 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
 		userToInsert.setEmail(registerCondition.getEmail());
 		userToInsert.setMobile(registerCondition.getMobile());
 		userMapper.insertSelective(userToInsert);
+	}
+
+	@Override
+	public List<UsersDTO> getUsers(Integer page, Integer pageSize) {
+		PageHelper.startPage(page, pageSize);
+		List<UsersDTO> usersDTOS = null;
+		if (RoleEnum.Simple.equals(UserContext.getCurrentUser().getRole())) {
+			usersDTOS = userMapper.getUsers(null, UserContext.getCurrentUser().getId());
+		}else if (RoleEnum.Manager.equals(UserContext.getCurrentUser().getRole())) {
+			usersDTOS = userMapper.getUsers(RoleEnum.Simple, UserContext.getCurrentUser().getId());
+		}
+		return usersDTOS;
+	}
+
+	@Override
+	public void deleteUser(Long userId) {
+		Long currentUserId = UserContext.getCurrentUser().getId();
+		if (userId.equals(currentUserId)) {
+			throw new BusinessException(ResultEnum.DONT_DELETE_SELF);
+		}
+		if (RoleEnum.Simple.equals(UserContext.getCurrentUser().getRole())) {
+			throw new BusinessException(ResultEnum.CANT_DELETE);
+		}
+		User userSearch = userMapper.selectByPrimaryKey(userId);
+		if (userSearch == null) {
+			throw new BusinessException(ResultEnum.USER_IS_NOT_EXIT);
+		}
+		userMapper.delete(userSearch);
 	}
 
 }

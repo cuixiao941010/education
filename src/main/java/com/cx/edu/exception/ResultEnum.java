@@ -16,7 +16,9 @@ public enum ResultEnum {
 
     USER_IS_NOT_EXIT("10001", "用户不存在"),
     USERNAME_OR_PASSWORD_ERROR("10001", "用户名或密码错误"),
-    USERNAME_IS_EXISTED("10002", "用户名已存在");
+    USERNAME_IS_EXISTED("10002", "用户名已存在"),
+    DONT_DELETE_SELF("10003", "不能删除当前用户"),
+    CANT_DELETE("10004", "当前用户无删除权限");
 
 
     private String code;

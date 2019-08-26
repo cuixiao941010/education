@@ -6,6 +6,9 @@ import com.cx.edu.entity.user.User;
 import com.cx.edu.user.model.LoginCondition;
 import com.cx.edu.user.model.LoginDTO;
 import com.cx.edu.user.model.RegisterCondition;
+import com.cx.edu.user.model.UsersDTO;
+
+import java.util.List;
 
 public interface UserService extends BaseService<User, Long> {
 
@@ -14,5 +17,9 @@ public interface UserService extends BaseService<User, Long> {
     void logout();
 
     void register(RegisterCondition registerCondition);
+
+    List<UsersDTO> getUsers(Integer page, Integer pageSize);
+
+    void deleteUser(Long userId);
 
 }

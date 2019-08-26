@@ -36,4 +36,7 @@ public class webController {
 
     @RequestMapping("register")
     public String register() {return  "register";}
+
+    @RequestMapping("user")
+    public String user() {return  "user";}
 }

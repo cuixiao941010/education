@@ -5,7 +5,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public enum RoleEnum implements BaseEnum {
 
-	Simple(1, "普通角色");
+	Simple(1, "普通角色"),
+	Manager(2, "管理人员");
 
 	private Integer value;
 
