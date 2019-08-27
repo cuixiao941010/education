@@ -7,6 +7,7 @@ import com.cx.edu.entity.university.enums.EducationEnum;
 import com.cx.edu.entity.university.enums.ScoreEnum;
 import com.cx.edu.entity.university.enums.SubjectEnum;
 import com.cx.edu.jwt.UserContext;
+import com.cx.edu.log.model.LogSearchDTO;
 import com.cx.edu.log.repository.LogMapper;
 import com.cx.edu.log.service.LogService;
 import com.cx.edu.university.model.UniversityListDTO;
@@ -37,5 +38,12 @@ public class LogServiceImpl extends BaseServiceImpl<Log, Long> implements LogSer
 	@Override
 	public void saveLog(Log log) {
 		save(log);
+	}
+
+	@Override
+	public List<LogSearchDTO> getLog(String userName, String operation, String createAt, Integer page, Integer pageSize) {
+		PageHelper.startPage(page, pageSize);
+		List<LogSearchDTO> logSearchDTOS = logMapper.getUsers(userName, operation, createAt);
+		return logSearchDTOS;
 	}
 }

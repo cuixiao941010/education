@@ -3,6 +3,7 @@ package com.cx.edu.config;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.ConverterFactory;
 import org.springframework.core.convert.support.DefaultConversionService;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -35,7 +37,9 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 			.serializationInclusion(JsonInclude.Include.NON_NULL)
 			.serializationInclusion(JsonInclude.Include.NON_EMPTY)
 			.serializerByType(LocalDate.class, new LocalDateSerializer(DATE_FORMATTER))
-			.deserializerByType(LocalDate.class, new LocalDateDeserializer(DATE_FORMATTER));
+			.deserializerByType(LocalDate.class, new LocalDateDeserializer(DATE_FORMATTER))
+			.deserializerByType(LocalDateTime.class, new LocalDateDeserializer(DATE_TIME_FORMATTER))
+			.serializerByType(LocalDateTime.class, new LocalDateTimeSerializer(DATE_TIME_FORMATTER));
 		converters.add(new MappingJackson2HttpMessageConverter(builder.build()));
 	}
 

@@ -39,4 +39,7 @@ public class webController {
 
     @RequestMapping("user")
     public String user() {return  "user";}
+
+    @RequestMapping("log")
+    public String log() {return  "log";}
 }

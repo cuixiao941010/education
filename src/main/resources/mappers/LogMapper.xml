@@ -1,0 +1,30 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cx.edu.log.repository.LogMapper">
+
+    <resultMap id="logSearchDTO" type="com.cx.edu.log.model.LogSearchDTO">
+        <result property="id" column="id"/>
+        <result property="userName" column="user_name"/>
+        <result property="operation" column="operation"/>
+        <result property="ip" column="ip"/>
+        <result property="createAt" column="create_at"/>
+    </resultMap>
+    <select id="getUsers" resultMap="logSearchDTO">
+        SELECT id, user_name, operation, ip, create_at
+        FROM t_log
+        WHERE 1=1
+        <if test="userName != null and userName != ''">
+            AND user_name = #{userName}
+        </if>
+        <if test="operation != null and operation != ''">
+            AND operation = #{operation}
+        </if>
+        <if test="createAt != null and createAt != ''">
+            AND create_at LIKE CONCAT('%',#{createAt},'%')
+        </if>
+
+    </select>
+
+</mapper>
