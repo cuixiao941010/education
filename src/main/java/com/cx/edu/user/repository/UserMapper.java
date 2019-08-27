@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface UserMapper extends Mapper<User> {
 
-    List<UsersDTO> getUsers(@Param("role") RoleEnum role, @Param("id") Long id);
+    List<UsersDTO> getUsers(@Param("role") RoleEnum role, @Param("id") Long id, @Param("userName") String userName, @Param("mobile") String mobile);
 }

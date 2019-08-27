@@ -18,7 +18,7 @@ public interface UserService extends BaseService<User, Long> {
 
     void register(RegisterCondition registerCondition);
 
-    List<UsersDTO> getUsers(Integer page, Integer pageSize);
+    List<UsersDTO> getUsers(Integer page, Integer pageSize, String userName, String mobile);
 
     void deleteUser(Long userId);
 

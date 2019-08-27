@@ -15,9 +15,15 @@
         SELECT id, user_name, role, email, mobile
         FROM t_user
         WHERE
-        id = #{id}
+        (id = #{id}
         <if test="role != null ">
             OR role = #{role}
+        </if>)
+        <if test="userName != null and userName != ''">
+            AND user_name = #{userName}
+        </if>
+        <if test="mobile != null and mobile != ''">
+            AND mobile = #{mobile}
         </if>
 
     </select>

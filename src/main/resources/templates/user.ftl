@@ -117,29 +117,26 @@
 
             });
 
-            // form.on('submit(*)', function(data){
-            //     var param = {};
-            //     if (data.field.userName != "") {
-            //         param["education"] = data.field.education;
-            //     }
-            //     if (data.field.subject != "") {
-            //         param["artsSciences"] = data.field.subject;
-            //     }
-            //     if (data.field.schoolName != "") {
-            //         param["schoolName"] = data.field.schoolName;
-            //     }
-            //     table.reload('tabledemo', {
-            //         where: param
-            //         ,page: {
-            //             curr: 1 //重新从第 1 页开始
-            //         }
-            //         //重置where参数，避免上次查询的where参数提交
-            //         ,done: function(res, curr, count){
-            //             this.where={};
-            //         }
-            //     });
-            //     return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
-            // });
+            form.on('submit(*)', function(data){
+                var param = {};
+                if (data.field.userName != "") {
+                    param["userName"] = data.field.userName;
+                }
+                if (data.field.mobile != "") {
+                    param["mobile"] = data.field.mobile;
+                }
+                table.reload('tabledemo', {
+                    where: param
+                    ,page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    //重置where参数，避免上次查询的where参数提交
+                    ,done: function(res, curr, count){
+                        this.where={};
+                    }
+                });
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
 
         });
 

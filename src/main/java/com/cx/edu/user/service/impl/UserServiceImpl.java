@@ -96,13 +96,13 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
 	}
 
 	@Override
-	public List<UsersDTO> getUsers(Integer page, Integer pageSize) {
+	public List<UsersDTO> getUsers(Integer page, Integer pageSize, String userName, String mobile) {
 		PageHelper.startPage(page, pageSize);
 		List<UsersDTO> usersDTOS = null;
 		if (RoleEnum.Simple.equals(UserContext.getCurrentUser().getRole())) {
-			usersDTOS = userMapper.getUsers(null, UserContext.getCurrentUser().getId());
+			usersDTOS = userMapper.getUsers(null, UserContext.getCurrentUser().getId(), userName, mobile);
 		}else if (RoleEnum.Manager.equals(UserContext.getCurrentUser().getRole())) {
-			usersDTOS = userMapper.getUsers(RoleEnum.Simple, UserContext.getCurrentUser().getId());
+			usersDTOS = userMapper.getUsers(RoleEnum.Simple, UserContext.getCurrentUser().getId(), userName, mobile);
 		}
 		return usersDTOS;
 	}

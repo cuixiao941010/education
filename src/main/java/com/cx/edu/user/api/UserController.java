@@ -43,8 +43,10 @@ public class UserController {
 
 	@GetMapping("users")
 	public PageDTO getUsers(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
-							@RequestParam(value = "limit", required = false, defaultValue = "10") Integer pageSize) {
-		List<UsersDTO> usersDTOS = userService.getUsers(page,pageSize);
+							@RequestParam(value = "limit", required = false, defaultValue = "10") Integer pageSize,
+							@RequestParam(value = "userName", required = false) String userName,
+							@RequestParam(value = "mobile", required = false) String mobile) {
+		List<UsersDTO> usersDTOS = userService.getUsers(page, pageSize, userName, mobile);
 		return new PageDTO(new PageInfo(usersDTOS), usersDTOS);
 	}
 
